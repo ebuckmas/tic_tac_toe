@@ -106,7 +106,8 @@ const gamePlay = (() => {
         
     }
 
-    const handleClick = (() => { 
+    const handleClick = (() => {
+        let clickedBox = '';
         getBox.forEach(box => {        
             box.addEventListener('click', (e) => {
                 if (board[e.target.id] === ' ') {
@@ -118,6 +119,7 @@ const gamePlay = (() => {
                 }
             });            
         });
+    return clickedBox;
     }) ();
 
 }) ();

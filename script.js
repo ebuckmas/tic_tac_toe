@@ -20,8 +20,20 @@ const gameBoard = (() => {
     const fill = () => {
         getBox.forEach((box, index) => box.innerText = board[index]);
     }
+
+    let numClicks = 0; 
+
+    const turnTitle = () => {
+        //console.log(gameState);
+        if (gameBoard.numClicks !== 0 && gameBoard.numClicks % 2 !== 0) {
+            title.innerText = 'Player O Turn';
+        }
+        else {
+            title.innerText = 'Player X Turn';
+        }
+    };
     
-    return {title, board, restartBoard, getBox, fill}
+    return {title, board, restartBoard, getBox, fill, numClicks, turnTitle}
             
 })();
 
@@ -36,13 +48,15 @@ const gamePlay = (() => {
     const board = gameBoard.board;
     const restartBoard = gameBoard.restartBoard;
     const fill = gameBoard.fill;
+    //let numClicks = gameBoard.numClicks;
+    const turnTitle = gameBoard.turnTitle;
         
     //private
 
     let lastSelection = '';
 
     let gameState = '';
-    
+
     const XorO = () => {
         
         if (lastSelection === '') {
@@ -144,17 +158,27 @@ const gamePlay = (() => {
         }
     }
 
+    
+
     const handleClick = (() => {
         getBox.forEach((box) => {        
             box.addEventListener('click', (e) => {
+                if (box.innerText === 'X' || box.innerText === 'O') {
+                    return;
+                }
                 clickedBox = e.target.id;
                 playGame(clickedBox);
+                gameBoard.numClicks++;
+                console.log(gameBoard.numClicks)
+                turnTitle();
                 fill();
                 checkForWinOrTie();
-                console.log(gameState);
+                //console.log(gameState);
                 if (gameState !== '') {
                     title.innerText = gameState;
                 }
+                // gameBoard.numClicks++;
+                // console.log(gameBoard.numClicks);
             }); 
         });            
     }) ();
@@ -166,7 +190,7 @@ const gamePlay = (() => {
             lastSelection = '';
             gameState = '';
             fill();
-            numClicks = 0;
+            gameBoard.numClicks = 0;
         })
     }) ();
 
@@ -176,47 +200,47 @@ const gamePlay = (() => {
 
 
 
-const players = (() => {
+// const players = (() => {
 
-    //import
+//     //import
 
-    //const gameState = gamePlay.gameState;
-    const getBox = gameBoard.getBox;
-    const title = gameBoard.title;
+//     //const gameState = gamePlay.gameState;
+//     const getBox = gameBoard.getBox;
+//     const title = gameBoard.title;
     
     //private
     
-    let numClicks = 0;
+    // let numClicks = 0;
     
-    const turnTitle = () => {
-        //console.log(gameState);
-        if (numClicks !== 0 && numClicks % 2 !== 0) {
-            title.innerText = 'Player O Turn';
-        }
-        else {
-            title.innerText = 'Player X Turn';
-        }
-    };
+    // const turnTitle = () => {
+    //     //console.log(gameState);
+    //     if (numClicks !== 0 && numClicks % 2 !== 0) {
+    //         title.innerText = 'Player O Turn';
+    //     }
+    //     else {
+    //         title.innerText = 'Player X Turn';
+    //     }
+    // };
     
     
-    const countClicks = (() => {
-        getBox.forEach((box) => {        
-            box.addEventListener('click', () => {
-                if (title.innerText === 'Player X Wins!' || title.innerText === 'Player O Wins!') {
-                    return;
-                }
-                //console.log(gamePlay.gameState);
-                numClicks++;
-                turnTitle();
-            });
-        });
-    }) ();
+    // const countClicks = (() => {
+    //     getBox.forEach((box) => {        
+    //         box.addEventListener('click', () => {
+                
+    //             if (title.innerText === 'Player X Wins!' || title.innerText === 'Player O Wins!') {
+    //                 return;
+    //             }
+    //             //console.log(gamePlay.gameState);
+    //             numClicks++;
+    //             turnTitle();
+    //         });
+    //     });
+    // }) ();
 
 
     
 
 
-}) ();
 
 
 
